@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Тест: определите свой архетип</title>
+  <meta name="description" content="10 вопросов, чтобы понять ваш сильный архетип и подходящий стиль коммуникации.">
+
+  <!-- Заголовки для красивой ссылки в мессенджерах и соцсетях -->
+  <meta property="og:title" content="Тест: ваш архетип">
+  <meta property="og:description" content="Пройдите тест из 10 вопросов и узнайте свой сильный архетип.">
+
+  <style>
+    :root {
+      --bg: #0f1220;
+      --card: #181c2f;
+      --text: #f4f6ff;
+      --muted: #aab1d0;
+      --accent: #7c5cff;
+      --accent-2: #4fd1c5;
+      --border: rgba(255, 255, 255, 0.12);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg, #0f1220, #151a2d);
+      color: var(--text);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+
+    .wrap {
+      width: min(760px, 100%);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(28px, 4vw, 40px);
+      line-height: 1.08;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: clamp(22px, 3vw, 30px);
+      line-height: 1.15;
+    }
+
+    p {
+      color: var(--muted);
+      line-height: 1.55;
+      margin: 0 0 14px;
+    }
+
+    .label {
+      color: var(--accent-2);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 14px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: 0.18s;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.94;
+    }
+
+    .btn.ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .link {
+      margin-top: 18px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .answers {
+      display: grid;
+      gap: 10px;
+    }
+
+    .answer {
+      text-align: left;
+      padding: 15px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text);
+      cursor: pointer;
+      transition: 0.15s;
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
+    .answer:hover {
+      border-color: var(--accent);
+      background: rgba(124, 92, 255, 0.12);
+    }
+
+    .progress {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    #bar {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    }
+
+    #counter {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 14px;
+    }
+
+    .actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    form {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    input[type="email"] {
+      width: 100%;
+      min-height: 50px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      padding: 0 14px;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .small {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    #formMsg {
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+
+    <!-- Стартовый экран -->
+    <section id="start" class="card">
+      <p class="label">Тест для самоанализа</p>
+      <h1>Узнайте свой сильный архетип за 10 вопросов</h1>
+      <p>
+        Быстрый тест поможет понять, какой стиль, темы и формат коммуникации подходят именно вам.
+      </p>
+      <button id="startBtn" class="btn">Начать тест</button>
+    </section>
+
+    <!-- Экран вопросов -->
+    <section id="quiz" class="card" hidden>
+      <div class="progress">
+        <div id="bar"></div>
+      </div>
+
+      <div id="counter"></div>
+      <h2 id="question"></h2>
+
+      <div id="answers" class="answers"></div>
+    </section>
+
+    <!-- Экран результата -->
+    <section id="result" class="card" hidden>
+      <p class="label">Ваш результат</p>
+      <h2 id="resultTitle"></h2>
+      <p id="resultText"></p>
+      <p id="secondaryText"></p>
+
+      <div class="actions">
+        <a id="igBtn" class="btn" href="#" target="_blank" rel="noopener">
+          Перейти в Instagram
+        </a>
+
+        <a id="leadBtn" class="btn ghost" href="#" target="_blank" rel="noopener">
+          Получить гайд
+        </a>
+      </div>
+
+      <!-- Форма сбора контактов: включится, если указать FORMSPREE_URL -->
+      <form id="leadForm" hidden>
+        <h3 style="margin: 0 0 8px;">Получить полный разбор</h3>
+        <p class="small">
+          Оставьте e-mail, и мы отправим материалы по вашему архетипу.
+        </p>
+
+        <input type="email" name="email" placeholder="Ваш e-mail" required>
+        <input type="hidden" name="archetype" id="archetypeField">
+
+        <button class="btn" type="submit">Отправить</button>
+
+        <p class="small">
+          Нажимая кнопку, вы соглашаетесь на обработку данных.
+        </p>
+
+        <p id="formMsg"></p>
+      </form>
+
+      <button id="restart" class="link">Пройти тест ещё раз</button>
+    </section>
+
+  </main>
+
+  <script>
+    // =====================================================
+    // НАСТРОЙКИ: замените эти ссылки перед публикацией
+    // =====================================================
+
+    // Ваш Instagram профиль или ссылка на Direct:
+    // Например: "https://www.instagram.com/your_account"
+    // Или: "https://ig.me/m/your_username"
+    const INSTAGRAM_URL = "https://www.instagram.com/your_account";
+
+    // Ссылка на лид-магнит: Google Drive, Telegram, PDF, Notion и т.д.
+    const LEAD_MAGNET_URL = "";
+
+    // Если хотите собирать email без сервера, создайте форму на https://formspree.io
+    // и вставьте сюда ваш адрес вида: "https://formspree.io/f/abcdefgh"
+    const FORMSPREE_URL = "";
+
+    // =====================================================
+    // АРХЕТИПЫ
+    // =====================================================
+
+    const ARCHETYPES = {
+      creator: {
+        name: "Творец",
+        text: "Вам важны самовыражение, эстетика и новые идеи. Вы чувствуете себя сильными, когда создаёте, экспериментируете и показываете миру своё видение.",
+        short: "Вам подходят творчество, визуал, стиль, идеи и нестандартные решения."
+      },
+
+      hero: {
+        name: "Герой",
+        text: "Вы включаетесь от вызовов, целей и действий. Вам важно преодолевать препятствия, добиваться результата и вдохновлять других личным примером.",
+        short: "Вам подходят вызовы, дисциплина, спорт, достижения и истории преодоления."
+      },
+
+      sage: {
+        name: "Мудрец",
+        text: "Вы ищете ясность, глубину и компетентность. Вам важно понимать причины, анализировать и делиться точными знаниями.",
+        short: "Вам подходят обучение, разборы, факты, экспертность и осмысленный контент."
+      },
+
+      caregiver: {
+        name: "Хранитель",
+        text: "Вы чувствуете людей и создаёте атмосферу доверия. Вам важно поддерживать, заботиться и делать жизнь других лучше.",
+        short: "Вам подходят помощь, сервис, отношения, поддержка и тёплая коммуникация."
+      }
+    };
+
+    // =====================================================
+    // ВОПРОСЫ
+    // Каждый вариант ответа начисляет балл одному архетипу
+    // =====================================================
+
+    const QUESTIONS = [
+      {
+        q: "Что обычно даёт вам энергию?",
+        a: [
+          ["Возможность создавать что-то новое", "creator"],
+          ["Вызов и преодоление препятствий", "hero"],
+          ["Понимание смысла и глубокие разговоры", "sage"],
+          ["Забота о близких и тёплое общение", "caregiver"]
+        ]
+      },
+
+      {
+        q: "В новой компании вы чаще всего...",
+        a: [
+          ["Предлагаю идеи и задаю тон", "creator"],
+          ["Беру инициативу на себя", "hero"],
+          ["Наблюдаю и анализирую", "sage"],
+          ["Создаю комфорт и контакт", "caregiver"]
+        ]
+      },
+
+      {
+        q: "Идеальный выходной для вас — это...",
+        a: [
+          ["Творчество, искусство, вдохновение", "creator"],
+          ["Спорт, активность, челлендж", "hero"],
+          ["Книга, обучение, исследование", "sage"],
+          ["Время с семьёй или друзьями", "caregiver"]
+        ]
+      },
+
+      {
+        q: "Когда появляется проблема, вы сначала...",
+        a: [
+          ["Ищу нестандартный ход", "creator"],
+          ["Действую решительно", "hero"],
+          ["Разбираю причины", "sage"],
+          ["Поддерживаю людей рядом", "caregiver"]
+        ]
+      },
+
+      {
+        q: "Что для вас значит успех?",
+        a: [
+          ["Свобода самовыражения", "creator"],
+          ["Победа и результат", "hero"],
+          ["Компетентность и ясность", "sage"],
+          ["Благополучие и доверие людей", "caregiver"]
+        ]
+      },
+
+      {
+        q: "За что вас чаще всего хвалят?",
+        a: [
+          ["За воображение и вкус", "creator"],
+          ["За смелость и настойчивость", "hero"],
+          ["За точные советы", "sage"],
+          ["За надёжность и чуткость", "caregiver"]
+        ]
+      },
+
+      {
+        q: "Что в работе вам важнее всего?",
+        a: [
+          ["Творческая свобода", "creator"],
+          ["Амбициозные цели", "hero"],
+          ["Смысл и экспертиза", "sage"],
+          ["Хорошая атмосфера и польза", "caregiver"]
+        ]
+      },
+
+      {
+        q: "Что вас сильнее всего раздражает?",
+        a: [
+          ["Шаблонность и скука", "creator"],
+          ["Нерешительность и слабость", "hero"],
+          ["Поверхностность и нелогичность", "sage"],
+          ["Равнодушие и грубость", "caregiver"]
+        ]
+      },
+
+      {
+        q: "Какая роль вам ближе в команде?",
+        a: [
+          ["Визионер и генератор идей", "creator"],
+          ["Лидер и достигатор", "hero"],
+          ["Аналитик и советник", "sage"],
+          ["Поддержка и коммуникатор", "caregiver"]
+        ]
+      },
+
+      {
+        q: "Какая фраза про вас?",
+        a: [
+          ["Я создаю", "creator"],
+          ["Я могу", "hero"],
+          ["Я понимаю", "sage"],
+          ["Я рядом", "caregiver"]
+        ]
+      }
+    ];
+
+    // =====================================================
+    // ЛОГИКА ТЕСТА
+    // =====================================================
+
+    let scores = {};
+    let current = 0;
+    let lastArchetype = "";
+
+    const startSection = document.getElementById("start");
+    const quizSection = document.getElementById("quiz");
+    const resultSection = document.getElementById("result");
+
+    const bar = document.getElementById("bar");
+    const counter = document.getElementById("counter");
+    const question = document.getElementById("question");
+    const answers = document.getElementById("answers");
+
+    const resultTitle = document.getElementById("resultTitle");
+    const resultText = document.getElementById("resultText");
+    const secondaryText = document.getElementById("secondaryText");
+
+    const igBtn = document.getElementById("igBtn");
+    const leadBtn = document.getElementById("leadBtn");
+
+    const leadForm = document.getElementById("leadForm");
+    const archetypeField = document.getElementById("archetypeField");
+    const formMsg = document.getElementById("formMsg");
+
+    function resetQuiz() {
+      current = 0;
+      scores = Object.fromEntries(
+        Object.keys(ARCHETYPES).map(key => [key, 0])
+      );
+    }
+
+    function showSection(section) {
+      startSection.hidden = true;
+      quizSection.hidden = true;
+      resultSection.hidden = true;
+      section.hidden = false;
+    }
+
+    function shuffle(items) {
+      const arr = [...items];
+
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+
+      return arr;
+    }
+
+    function renderQuestion() {
+      if (current >= QUESTIONS.length) {
+        return finish();
+      }
+
+      const q = QUESTIONS[current];
+
+      counter.textContent = `Вопрос ${current + 1} из ${QUESTIONS.length}`;
+      bar.style.width = `${Math.round((current / QUESTIONS.length) * 100)}%`;
+
+      question.textContent = q.q;
+      answers.innerHTML = "";
+
+      shuffle(q.a).forEach(([text, key]) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "answer";
+        btn.textContent = text;
+
+        btn.addEventListener("click", () => {
+          if (scores[key] !== undefined) {
+            scores[key] += 1;
+          }
+
+          current += 1;
+          renderQuestion();
+        });
+
+        answers.appendChild(btn);
+      });
+    }
+
+    function finish() {
+      bar.style.width = "100%";
+
+      const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+
+      const topKey = sorted[0][0];
+      const secondKey = sorted[1][0];
+
+      const top = ARCHETYPES[topKey];
+      const second = ARCHETYPES[secondKey];
+
+      const tie = sorted[0][1] === sorted[1][1];
+
+      lastArchetype = top.name;
+
+      resultTitle.textContent = top.name;
+      resultText.textContent = top.text;
+
+      if (tie) {
+        secondaryText.textContent = `У вас сильный баланс: ${top.name} и ${second.name}. ${top.short}`;
+      } else {
+        secondaryText.textContent = `Второй по силе архетип: ${second.name}. ${second.short}`;
+      }
+
+      // Instagram кнопка
+      if (INSTAGRAM_URL && INSTAGRAM_URL !== "#" && !INSTAGRAM_URL.includes("your_account")) {
+        igBtn.href = INSTAGRAM_URL;
+        igBtn.hidden = false;
+      } else {
+        igBtn.hidden = true;
+      }
+
+      // Кнопка лид-магнита
+      if (LEAD_MAGNET_URL && LEAD_MAGNET_URL !== "#") {
+        leadBtn.href = LEAD_MAGNET_URL;
+        leadBtn.hidden = false;
+      } else {
+        leadBtn.hidden = true;
+      }
+
+      // Форма сбора email
+      if (FORMSPREE_URL) {
+        leadForm.hidden = false;
+        archetypeField.value = lastArchetype;
+      } else {
+        leadForm.hidden = true;
+      }
+
+      showSection(resultSection);
+    }
+
+    document.getElementById("startBtn").addEventListener("click", () => {
+      resetQuiz();
+      showSection(quizSection);
+      renderQuestion();
+    });
+
+    document.getElementById("restart").addEventListener("click", () => {
+      resetQuiz();
+      showSection(startSection);
+    });
+
+    leadForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!FORMSPREE_URL) {
+        formMsg.textContent = "Форма не настроена: укажите FORMSPREE_URL в коде.";
+        return;
+      }
+
+      const data = new FormData(leadForm);
+
+      try {
+        const response = await fetch(FORMSPREE_URL, {
+          method: "POST",
+          body: data,
+          headers: {
+            "Accept": "application/json"
+          }
+        });
+
+        if (response.ok) {
+          formMsg.textContent = "Спасибо! Данные отправлены.";
+          leadForm.reset();
+          archetypeField.value = lastArchetype;
+        } else {
+          formMsg.textContent = "Ошибка отправки. Попробуйте позже.";
+        }
+      } catch (error) {
+        formMsg.textContent = "Ошибка сети. Попробуйте позже.";
+      }
+    });
+
+    resetQuiz();
+  </script>
+</body>
+</html>
